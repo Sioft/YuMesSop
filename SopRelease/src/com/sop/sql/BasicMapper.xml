@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.sop.dao.BasicDao">
+	<!-- system.sys_dicttype -->
+	<select id="findIPStation" resultType="map">
+		select mes_scf_id scfId,line_type lineType,function_code
+		functionCode,function_name functionName,
+		procedure_no procedureNo,user_id userId,ip_address ipAddress,mac_address
+		macAddress,pub_crtdate createDate
+		from mes_stationConfig where pub_status is null and ip_address =
+		#{ipAddress}
+	</select>
+
+	<select id="findProductCodeSelect" resultType="map">
+		select PRODUCTID PRODUCTID,NAME PRODUCTNAME
+		from YU_MATERIALNUM
+	</select>
+	<select id="findProcedureSel" resultType="map">
+		select procedure_no PROCEDURENO,procedure_name PROCEDURENAME
+		from yu_procedureInfo where pub_status = 'Y' and product_code = #{productId}
+	</select>
+	<select id="findEmployeeorSel" resultType="map">
+		select empname,empnumber from yu_employeeor
+	</select>
+	<select id="findIpSopStation" resultType="map">
+		<!-- select procedure_no procedureNo,procedure_name procedureName from 
+			(select * from yu_procedureInfo) proce left join (select * from mes_stationConfig) 
+			station on station.procedure_no = proce.procedure_no where pub_status is 
+			null and ip_address = #{ipAddress} -->
+	</select>
+	<select id="findExistStationConfigId" resultType="map">
+		select mes_scf_id scfId,flag_lock flaglock from mes_stationConfig where ip_address=#{ipAddress} and
+		product_id = #{productId} and rownum=1
+	</select>
+	<select id="findAllStationConfig" resultType="map">
+		select mes_scf_id scfId,line_type lineType,function_code
+		functionCode,function_name functionName,
+		procedure_no procedureNo,user_id userId,ip_address ipAddress,mac_address
+		macAddress,pub_crtdate createDate
+		from mes_stationConfig where pub_status is null
+	</select>
+	<update id="updateStationConfig" parameterType="com.sop.entity.StationConfig">
+		update mes_stationConfig
+		set user_id = #{user_id}
+		where mes_scf_id = #{mes_scf_id}
+	</update>
+	<insert id="saveStationConfig" parameterType="com.sop.entity.StationConfig"
+		useGeneratedKeys="false" keyProperty="mes_scf_id">
+		<selectKey keyProperty="mes_scf_id" order="BEFORE"
+			resultType="java.lang.Integer">
+			select mes_stationConfig_seq.nextval as mes_scf_id from DUAL
+		</selectKey>
+		insert into mes_stationConfig
+		(mes_scf_id,line_type,product_id,procedure_group,user_id,ip_address,pub_crtdate,flag_lock)
+		values
+		(#{mes_scf_id},#{line_type},#{product_id},#{mes_scf_id},#{user_id},#{ip_address},to_date(#{pub_crtdate},'yyyy-mm-dd
+		hh24:mi:ss'),'否')
+	</insert>
+	<delete id="deleteStationConfig">
+		update mes_stationConfig set pub_status='1' where mes_scf_id = #{scfId}
+	</delete>
+
+	<!-- system.sysp_dictdata -->
+	<select id="findAllProcedure" resultType="map">
+		select procedure_id procedureId,product_code productCode,product_name
+		productName,procedure_no procedureNo,
+		procedure_code procedureCode,procedure_name procedureName,pub_crtdate createDate
+		from yu_procedureInfo where pub_status ='Y'
+	</select>
+	<update id="updateProcedure" parameterType="com.sop.entity.Procedure">
+		update yu_procedureInfo
+		set product_code = #{product_code},product_name =
+		#{product_name},procedure_no = #{procedure_no},
+		procedure_code = #{procedure_code},procedure_name = #{procedure_name}
+		where
+		procedure_id = #{procedure_id}
+	</update>
+	<insert id="saveProcedure" parameterType="com.sop.entity.Procedure"
+		useGeneratedKeys="false" keyProperty="procedure_id">
+		<selectKey keyProperty="procedure_id" order="BEFORE"
+			resultType="java.lang.Integer">
+			select yu_procedureInfo_seq.nextval as procedure_id from DUAL
+		</selectKey>
+		insert into yu_procedureInfo
+		(procedure_id,product_code,product_name,procedure_no,procedure_code,procedure_name,pub_crtdate)
+		values
+		(#{procedure_id},#{product_code},#{product_name},#{procedure_no},#{procedure_code},#{procedure_name},to_date(#{pub_crtdate},'yyyy-mm-dd
+		hh24:mi:ss'))
+	</insert>
+	<delete id="deleteProcedure">
+		update yu_procedureInfo set pub_status='N' where procedure_id =
+		#{procedureId}
+	</delete>
+
+
+	<!-- system.DeviceInfo -->
+	<select id="findAllDeviceInfo" resultType="map">
+		select DVEID DVEID,DVEPJTID DVEPJTID,DVETYPE DVETYPE,DVEDTYPE DVEDTYPE,
+		DVEVLE DVEVLE,PUB_CRTDATE createDate
+		from yu_DEVICEINFO where PUB_STATUS is null
+	</select>
+	<update id="updateDeviceInfo">
+		update yu_DEVICEINFO
+		set DVEPJTID = #{dvepjtid},DVETYPE = #{dvetype},
+		DVEDTYPE = #{dvedtype},DVEVLE = #{dvevle}
+		where dveid = #{dveid}
+	</update>
+	<insert id="saveDeviceInfo" useGeneratedKeys="false"
+		keyProperty="dveid">
+		<selectKey keyProperty="dveid" order="BEFORE" resultType="java.lang.Integer">
+			select deviceInfoSeq.nextval as dveid from DUAL
+		</selectKey>
+		insert into yu_DEVICEINFO
+		(dveid,DVEPJTID,DVETYPE,DVEDTYPE,DVEVLE,pub_crtdate)
+		values
+		(#{dveid},#{dvepjtid},#{dvetype},#{dvedtype},#{dvevle},to_date(#{time},'yyyy-mm-dd
+		hh24:mi:ss'))
+	</insert>
+	<delete id="deleteDeviceInfo">
+		update yu_DEVICEINFO set pub_status='1' where dveid = #{dveid}
+	</delete>
+
+	<!-- system.CheckInfo -->
+	<select id="findAllCheckInfo" resultType="map">
+		select CHKID CHKID,CHKPJTID CHKPJTID,CHKTYPE CHKTYPE,CHKUVL CHKUVL,
+		CHKDVL CHKDVL,pub_crtdate createDate
+		from yu_CHECKINFO where pub_status is null
+	</select>
+	<update id="updateCheckInfo">
+		update yu_CHECKINFO
+		set CHKPJTID= #{chkpjtid},chktype = #{chktype},
+		chkuvl = #{chkuvl},chkdvl = #{chkdvl}
+		where CHKID = #{chkid}
+	</update>
+	<insert id="saveCheckInfo" parameterType="com.sop.entity.CheckInfo"
+		useGeneratedKeys="false" keyProperty="chkid">
+		<selectKey keyProperty="chkid" order="BEFORE" resultType="java.lang.Integer">
+			select checkInfoSeq.nextval as chkid from DUAL
+		</selectKey>
+		insert into yu_CHECKINFO
+		(chkid,CHKPJTID,CHKTYPE,CHKUVL,CHKDVL,pub_crtdate)
+		values
+		(#{chkid},#{chkpjtid},#{chktype},#{chkuvl},#{chkdvl},to_date(#{time},'yyyy-mm-dd
+		hh24:mi:ss'))
+	</insert>
+	<update id="deleteCheckInfo">
+		update yu_CHECKINFO set pub_status='1' where chkid = #{chkId}
+	</update>
+
+	<select id="findProcedureByIpAndProductCode" resultType="string">
+		select procedure_no from yu_proceduregroup where procedure_group = 
+			(select mes_scf_id from mes_stationconfig where product_id=#{productId} and ip_address=#{ipAddress} and pub_status is null)
+	</select>
+	<update id="deleteProcedureGroup">
+		update yu_proceduregroup set pub_status='1' where procedure_group = #{procedureGroup}
+	</update>
+	<insert id="saveProcedureGroup" useGeneratedKeys="false"
+		keyProperty="group_id">
+		<selectKey keyProperty="group_id" order="BEFORE" resultType="java.lang.Integer">
+			select yu_procedureGroup_seq.nextval as group_id from DUAL
+		</selectKey>
+		insert into yu_proceduregroup
+		(group_id,procedure_group,procedure_no,pub_crtdate)
+		values
+		(#{group_id},#{procedureGroup},#{procedureNo},to_date(#{time},'yyyy-mm-dd hh24:mi:ss'))
+	</insert>
+</mapper>

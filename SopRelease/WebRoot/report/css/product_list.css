@@ -1,0 +1,48 @@
+.content_product{
+    width: 1024px;
+    height: 748px;
+    /*background-color:#CCFFFF;*/
+}
+.product_left{
+    width: 150px;
+    height: 748px;
+    border-right: 1px solid #e0e0e0;
+    border-left: 1px solid #e0e0e0;
+    float: left;
+}
+#product_right,#product_basic_msg,#product_right_technology,#product_right_quality,#product_right_requir,#product_right_report{
+    float: left;
+    width: 872px;
+    height: 748px;
+    overflow: auto;
+    /*overflow-x: scroll;
+    overflow-y:scroll;*/
+}
+/*左侧导航样式*/
+.navbar-nav li{
+    list-style-type: none;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 14px;
+    /*background-color: #00a0e9;*/
+    border-bottom: 1px solid #e0e0e0;
+}
+.navbar-nav_first{
+    margin-top: 50px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.nav_first_li{
+    background-color: #c4e3ff;
+    border-bottom: none;
+}
+
+
+
+
+
+
+

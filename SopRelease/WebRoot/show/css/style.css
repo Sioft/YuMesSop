@@ -1,0 +1,87 @@
+ul,li {list-style-type:none;vertical-align:0;padding: 0;margin: 0;}
+.mkeFocus { height: 1030px; width: 1374px;  padding-top:0px;}
+.mkeUl {  height: 1030px; width: 1374px; overflow: hidden; position: relative;}
+.mkeUl ul { position: absolute; left: 0px; top: 0px; height: 1030px; }
+.mkeUl ul li { float: left; text-align: center; font: 20px "微软雅黑";height: 1030px; width: 1374px; line-height: 1030px; }
+.mkeUl ul li img { margin-bottom: 18px;max-height:1030px; max-width:1374px;dipslay:table-cell;vertical-align:middle}
+
+#turn_foot{width: 150px;height: 60px;background-color: #001233;opacity: 0.3;position: absolute; z-index: 1; left: 612px;bottom: 10px;border-radius: 30px;}
+
+.mkeNum { background:  url(../images/banNum.png); height: 60px; width: 55px; position: absolute;left: 47px; z-index: 1;  }
+.mke_ns1 { line-height: 60px; font-size: 62px;color: #FFFFFF; text-align: center; height: 60px; width: 60px; position: absolute; left: -30px; top: 0px; font-family:'微软雅黑';}
+    .mke_ns2 { line-height: 60px;font-size: 40px; color: #FFFFFF; text-align: center; display: block; height: 45px; width: 45px; position: absolute; right: -20px; bottom: 10px;font-family:'微软雅黑'; }
+.mkeLbtn { background:  url(../images/kerBtn.png) no-repeat; height: 1030px; width: 90px; position: absolute; left: 0px; top: 0px; cursor: pointer; z-index: 10; }
+.mkeRbtn { position: absolute; top: 0px; right: 0px; background: url(../images/kelBtn.png) no-repeat; height: 1030px; width: 90px; cursor: pointer; z-index: 10; }
+/* 效果CSS结束 */
+#left{position: absolute;}
+#right{width:546px;height:1030px;position: absolute;top:0;right:0;margin-left: 546px}
+#right_title{font-size: 40px;text-align: center;line-height:110px;font-family:'微软雅黑';color:#ffffff;width: 546px;height:110px;background-color: #121d31;}
+/*上部展示信息的样式*/
+.detail_table{background:  url(../images/bg_imgup.png) no-repeat;width: 546px;height: 546px;}
+.lable_text{padding-left: 20px;color:#cbcbcb;font-size: 28px;font-family:'微软雅黑';height: 64px;line-height: 64px;width: 90px; }
+.lable_textc{color: #ffffff;font-size: 23px;font-family:'微软雅黑';height: 64px;line-height: 64px;text-align: left }
+.text_la{padding-left: 10px;}
+.warm,.warm_detail{float: left;font-size: 32px;color: rgb(242,18,18);font-family:'微软雅黑';height: 64px;line-height: 64px; }
+.warm{width: 250px;}
+.warm img{margin-left:15px;}
+.warn_lable{margin-left:15px;}
+/*下部订单信息的样式*/
+.msg_f{background-color:#121d31;width: 546px;height: 50px; }
+.msg_fi,.msg_lh,.msg_num{text-align: center;line-height:50px;font-size: 28px;font-family:'微软雅黑';color: #ffffff;float: left}
+.msg_fi{width: 160px;}
+.msg_lh{width: 240px;}
+.msg_num{width: 146px;}
+.msg_down{background:  url(../images/bg_imgdown.png) no-repeat;height: 324px;width: 546px;}
+#footer{width: 100%;height: 50px;background-color: #101724;position:absolute;bottom:0px;left: 0}
+#footer_name,#footer_tel{font-size: 22px;color: rgb(255,255,255);line-height: 50px;font-family:'微软雅黑';float: left;margin-left: 48px;}
+#footer_btn{margin-left: 287px;float: left;margin-top: 10px}
+.change_btn{border:none;border-radius: 19px;width: 140px;height: 38px;color:rgb(28,37,51);font-size: 22px;font-family:'微软雅黑'; }
+#state,#time{font-size: 22px;color: rgb(255,255,255);line-height: 50px;font-family:'微软雅黑';float: left; }
+#state{margin-left: 421px;}
+#time{margin-left: 60px;}
+
+.a_text{color: #cbcbcb;text-decoration: none; }
+
+/*最下面的表格样式*/
+.msg_f{background-color:#121d31;width: 546px;height: 50px; }
+.msg_fi,.msg_lh,.msg_num{text-align: center;line-height:50px;font-size: 28px;font-family:'微软雅黑';color: #ffffff;float: left}
+.msg_fi{width: 160px;}
+.msg_lh{width: 240px;}
+.msg_num{width: 146px;}
+.msg_down{background:  url(../images/bg_imgdown.png) no-repeat;height: 324px;width: 546px;}
+
+.message_text{
+    color: #ffffff;
+    font-size: 18px;
+    text-align: center;
+    height: 60px;
+    line-height: 60px;
+}
+.msg_firsta{
+    width: 160px;
+}
+.msg_firstb{
+    width: 240px;
+}
+.msg_firstc{
+    width: 146px;
+}
+.msg_first{opacity: 0.25}
+.msg_second{opacity: 0.5}
+.msg_third{opacity: 0.75}
+.msg_fifth{line-height: 60px;font-size: 24px;}
+.msg_fifth1{width:180px;text-align: center;color: #ffffff;float: left}
+.msg_fifth2{width:306px;text-align: left;color:#09d35e;float: left  }
+
+.lable_text a{color: #cbcbcb;text-decoration: none;}
+.lable_text a:hover{color:#ffffff;text-decoration: none;}
+
+.inp{
+    width: 400px;
+    height: 48px;
+    border:1px solid #b3b3b3;
+    border-radius: 2px;
+    font-size: 24px;
+    color: #333333;
+    padding-left: 15px;
+}

@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.ProductDao">
+ 
+ 	<select id="getCheckValueListByBarCode" resultType="com.sop.entity.CheckValue">
+ 		select * from yu_checkvalues where chvcid=#{barCode}
+ 	</select>
+ 	<select id="findAll" resultType="com.sop.entity.ProductInfo">
+ 		select * from mes_productinfo
+ 	</select>
+	<select id="findMaterialNextSeq" resultType="java.lang.Integer">
+		select YU_PROCESSNUM_material_Seq.nextval from dual
+ 	</select>
+ 	<update id="updateProcessStock" >                                                                                                                                              
+     		update yu_processnum set stock_in='Y',finishtime = #{passTime} where pc_barcode=#{barCode}                                                                                                                                      
+     </update> 
+ 	
+	<insert id="savePassProduct">
+		<selectKey keyProperty="pc_id" order="BEFORE" resultType="java.lang.Integer">
+            select YU_PROCESSNUM_Seq.nextval as pc_id from DUAL
+        </selectKey>
+        <!-- <selectKey keyProperty="material" order="BEFORE" resultType="java.lang.Integer">
+            select YU_PROCESSNUM_material_Seq.nextval as material from DUAL
+        </selectKey> -->
+ 		insert into YU_PROCESSNUM (pc_id,pc_barcode,userp,material,pord_id,passtime) values 
+ 		(#{pc_id},#{barCode},#{userp},#{material},#{pordId},#{passTime})
+ 	</insert>
+ 	<insert id="savePassUser">
+		<selectKey keyProperty="id" order="BEFORE" resultType="java.lang.Integer">
+            select YU_USERP_Seq.nextval as id from DUAL
+        </selectKey>
+        <!-- <selectKey keyProperty="material" order="BEFORE" resultType="java.lang.Integer">
+            select YU_PROCESSNUM_material_Seq.nextval as material from DUAL
+        </selectKey> -->
+ 		insert into yu_userp (id,name,version,ugroup,position,passtime) values 
+ 		(#{id},#{userCode},#{sopVersion},#{uGroup},#{position},#{passTime})
+ 	</insert>
+ 	
+ 	<insert id="savePassProductM">
+		<selectKey keyProperty="pc_id" order="BEFORE" resultType="java.lang.Integer">
+            select YU_PROCESSNUM_Seq.nextval as pc_id from DUAL
+        </selectKey>
+        
+ 		insert into YU_PROCESSNUM (pc_id,pc_barcode,pord_id,passtime,ipaddress,material) values 
+ 		(#{pc_id},#{barCode},#{pordId},#{passTime},#{ipAddress},#{lineNum})
+ 	</insert>
+ 	<!-- 保存关键原物料 -->
+ 	<insert id="saveMaterielMsg">
+		<!-- <selectKey keyProperty="mes_mrecord_id" order="BEFORE" resultType="java.lang.Integer">
+            select materiel_record_Seq.nextval as mes_mrecord_id from DUAL
+        </selectKey>
+ 		insert into mes_materiel_record (mes_mrecord_id,bar_code,materiel_code,pub_crtdate) values 
+ 		(#{mes_mrecord_id},#{bar_code},#{materiel_code},#{pub_crtdate}) -->
+ 		<selectKey keyProperty="M_ID" order="BEFORE" resultType="java.lang.Integer">
+            select YU_MATERIAL_Seq.nextval as M_ID from DUAL
+        </selectKey>
+ 		insert into YU_MATERIAL (M_ID,BARCODE,MGROUP,MPOSITION,passtime,material_type) values 
+ 		(#{M_ID},#{barCode},#{mGroup},#{mPosition},#{passTime},#{materialType})
+ 	
+ 	</insert>
+
+ 	
+ 	<select id="findNextProducts" resultType="map">
+ 		<!-- select pord_id prodId,productid productCode,num pordnum from yu_pord where pord_id in
+		(select process.pord_id from
+ 			(select * from mes_product_record where bar_code > #{barCode}) record1
+ 			left join
+ 			(select * from yu_processnum) process
+ 			on process.pc_barcode = record1.bar_code
+ 			left join
+ 			(select * from yu_pord) pord
+ 			on pord.pord_id = process.pord_id
+
+ 			group by process.pord_id) and rownum &lt;= 4 -->
+ 	<!-- select pord_id prodId,productid productCode,num pordnum from yu_pord where pord_id in
+		(select record.pord_id from
+ 			(select * from yu_processnum where PC_BARCODE >= #{barCode}) record
+ 			left join
+ 			(select * from yu_pord) pord
+ 			on pord.pord_id = record.pord_id
+"C:/Users/SIYUNX/Documents/WeChat Files/si320322/CustomEmotions/fa201ee9c23d722b09bb68073d3044fe"
+ 			group by record.pord_id) and rownum &lt;= 4 -->
+ 	select pord.pord_id prodId,materialnum.name productCode,num pordnum from 
+ 		(select * from yu_pord where pord_id in
+ 			(select pord_id from yu_processnum where PC_BARCODE >= #{barCode} group by pord_id)) pord
+ 		left join
+ 		(select * from YU_MATERIALNUM)	materialnum
+ 		on materialnum.PRODUCTID = pord.PRODUCTID
+ 	    where rownum &lt;= 4
+ 	</select>
+ 	
+ 	<select id="findMaterialLinenum" resultType="string">
+ 		select material from YU_PROCESSNUM where PC_BARCODE = #{productBarCode} group by material 
+ 	</select>
+ 	<select id="findProcessNum" resultType="string">
+ 		select pc_barcode from YU_PROCESSNUM where PC_BARCODE = #{barCode} and rownum = 1
+ 	</select>
+ 	<select id="findNumByExistPord" resultType="java.lang.Integer">
+ 		select count(*) from YU_PROCESSNUM where PORD_ID = #{pordId}
+ 	</select>
+ 
+ 	
+ 	<!-- 生产数量统计辅助表 -->
+ 	<insert id="saveProductAssistCount">
+ 		<selectKey keyProperty="dopc_id" order="BEFORE" resultType="java.lang.Integer">
+            select mes_dayoutputcount_seq.nextval as dopc_id from DUAL
+        </selectKey>
+ 		insert into yu_dayoutputcount (dopc_id,count_date,online_count,stockin_count,pub_crtdate,pub_uptdate) values 
+ 		(#{dopc_id},#{countDate},#{onlineCount},#{stockinCount},to_date(#{createDate},'yyyy-mm-dd hh24:mi:ss'),to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss'))
+ 	</insert>
+ 	<select id="findProductOnlineCount" resultType="java.lang.Integer">
+ 		select online_count from yu_dayoutputcount where count_date = #{countDate}
+ 	</select>
+ 	<select id="findProductStockinCount" resultType="java.lang.Integer">
+ 		select stockin_count from yu_dayoutputcount where count_date = #{countDate}
+ 	</select>
+ 	<update id="updateProductOnlineCount" >                                                                                                                                              
+     	update yu_dayoutputcount set online_count=#{onlineCount},pub_uptdate = to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss') where count_date = #{countDate}                                                                             
+    </update>
+    <update id="updateProductStockinCount" >                                                                                                                                              
+     	update yu_dayoutputcount set stockin_count=#{stockinCount},pub_uptdate = to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss') where count_date = #{countDate}                                                                             
+    </update>
+    
+    <!-- 任务单号数量辅助表 -->
+    <insert id="savePordAssistCount">
+ 		<selectKey keyProperty="pfc_id" order="BEFORE" resultType="java.lang.Integer">
+            select mes_pordfinishcount_seq.nextval as pfc_id from DUAL
+        </selectKey>
+ 		insert into yu_pordfinishcount (pfc_id,pord_id,online_count,stockin_count,pub_crtdate,pub_uptdate) values 
+ 		(#{pfc_id},#{pordId},#{onlineCount},#{stockinCount},to_date(#{createDate},'yyyy-mm-dd hh24:mi:ss'),to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss'))
+ 	</insert>
+ 	<select id="findPordOnlineCount" resultType="java.lang.Integer">
+ 		select online_count from yu_pordfinishcount where pord_id = #{pordId}
+ 	</select>
+ 	<select id="findPordStockinCount" resultType="java.lang.Integer">
+ 		select stockin_count from yu_pordfinishcount where pord_id = #{pordId}
+ 	</select>
+ 	<update id="updatePordOnlineCount" >                                                                                                                                              
+     	update yu_pordfinishcount set online_count=#{onlineCount},pub_uptdate = to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss') where pord_id = #{pordId}                                                                             
+    </update>
+    <update id="updatePordStockinCount" >                                                                                                                                              
+     	update yu_pordfinishcount set stockin_count=#{stockinCount},pub_uptdate = to_date(#{updateDate},'yyyy-mm-dd hh24:mi:ss') where pord_id = #{pordId}                                                                             
+    </update>
+ 	
+ 	<!-- 新建产品大类 -->
+ 	<insert id="saveNewProductCode" useGeneratedKeys="true" keyProperty="node_id" parameterType="com.sop.entity.ProductTree">
+ 		<selectKey keyProperty="node_id" order="BEFORE" resultType="java.lang.Integer">
+            select yu_producttree_seq.nextval as node_id from DUAL
+        </selectKey>
+ 		insert into yu_producttree (node_id,node_name,node_code,menu_level,parent_node_id,node_path,pub_crtdate) values 
+ 		(#{node_id},#{node_name},#{node_id},#{menu_level},#{parent_node_id},#{node_path},to_date(#{pub_crtdate},'yyyy-mm-dd hh24:mi:ss'))
+ 	</insert>
+ 	<!-- 维护产品大类基础表 -->
+ 	<insert id="saveNewMaterialNum">
+ 		<!-- <selectKey keyProperty="productId" order="BEFORE" resultType="java.lang.Integer">
+            select YU_materialnum_SEQ.nextval as productId from DUAL
+        </selectKey> -->
+ 		insert into yu_materialnum (productid,name) values 
+ 		(#{productId},#{nodeName})
+ 	</insert>
+ 	<!-- 删除产品大类 -->
+ 	<update id="deleteProductCode">
+ 		update yu_producttree set pub_status = '1' where node_id = #{nodeId} 
+ 	</update>
+ 	<!-- 删除产品大类基础表 -->
+ 	<delete id="deleteMaterialNum">
+ 		delete from yu_materialnum where productId = #{nodeId}
+ 	</delete>
+ 	<!-- 修改产品大类 -->
+ 	<update id="editNewProductCode">
+ 		update yu_producttree set node_name = #{nodeName} where node_id = #{nodeId} 
+ 	</update>
+ 	<!-- 修改产品大类基础表 -->
+ 	<update id="editNewMaterialNum">
+ 		update yu_materialnum set name = #{nodeName} where productid = #{nodeId} 
+ 	</update>
+ 	
+ 	<!-- //根据IP查找所属状态类型 -->
+ 	<select id="findIpConfigByIpaddress" resultType="string">
+ 		select ip_status from yu_ipconfig where ip_position = #{ipaddress}
+ 	</select>
+	<!-- 查找当前流程卡号所处的状态 -->
+	<select id="findCurrentProductStatusByBarCode" resultType="string">
+ 		select stock_in from yu_processnum where pc_barcode = #{barCode}
+ 	</select>
+	<!-- 更新流程卡的产品状态 -->
+	<update id="updateProductStatus">
+ 		update yu_processnum set stock_in=#{ipStatus} where pc_barcode = #{barCode}
+ 	</update>
+ 	<!-- 根据流程卡查询维修记录 -->
+	<select id="findRepairMsgBybarCode" resultType="string">
+	 select * from (select maintain.reon_station from
+		yu_maintain maintain
+		left join
+		yu_material material
+		on material.repair_type = maintain.yu_mtn_id
+	  where material.mgroup = #{barCode} and material.line_type='零号线'  order by passtime desc ) where rownum = 1
+ 	</select>
+ 	<!-- 保存主观不良 -->
+ 	<insert id="saveDecfectiveMsg" useGeneratedKeys="true" keyProperty="yu_mtn_id" parameterType="com.sop.entity.Maintain">
+ 		<selectKey keyProperty="yu_mtn_id" order="BEFORE" resultType="java.lang.Integer">
+            select YU_MAINTAIN_SEQ.nextval as yu_mtn_id from DUAL
+        </selectKey>
+ 		insert into yu_maintain (yu_mtn_id,yu_mtn_note,yu_mtn_phen,off_station,pub_crtdate,repair_status) values 
+ 		(#{yu_mtn_id},#{yu_mtn_note},#{yu_mtn_phen},#{off_station},to_date(#{pub_crtdate},'yyyy-mm-dd hh24:mi:ss'),'待维修')
+ 	</insert>
+ 	<!-- 保存主观不良（material） -->
+ 	<insert id="saveDefectiveMaterial">
+ 		<selectKey keyProperty="m_id" order="BEFORE" resultType="java.lang.Integer">
+            select YU_MATERIAL_SEQ.nextval as m_id from DUAL
+        </selectKey>
+ 		insert into yu_material (m_id,mgroup,passtime,repair_type,line_type) values 
+ 		(#{m_id},#{barCode},#{createDate},#{repairType},'零号线')
+ 	</insert>
+ 	<!--  -->
+ 	<select id="findSubjectDefectiveSel" resultType="map">
+ 		select dictdata.sys_ddt_code ddt_code,dictdata.sys_ddt_name ddt_name from
+ 			SYSP_DICTDATA dictdata
+ 			left join
+ 			SYS_DICTTYPE dicttype
+ 			on dicttype.sys_dtp_id = dictdata.sys_ddt_dtpid
+ 			where dicttype.sys_dtp_code = 'subject_type'
+ 	</select>
+ 	<!--  -->
+ 	<select id="findPordTotalNumByPordId" resultType="java.lang.Integer">
+ 		select num from yu_pord where pord_id = #{pordId}
+ 	</select>
+ 	<update id="updatePordStockStatus">
+ 		update yu_pord set pclose_state='D' where pord_id = #{pordId}
+ 	</update>
+ 	<update id="updatePordMcodeStatus">
+ 		update yu_pord set m_code='Y' where pord_id = #{pordId}
+ 	</update>
+ 	
+ </mapper>

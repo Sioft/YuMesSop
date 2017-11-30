@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="../../javascript/jquery-1.8.3.min.js"></script>
+    <title>品质检测数据报告</title>
+	<!--<link rel="stylesheet" href="../../css/quality_inspection.css">-->
+</head>
+<style>
+	.search-quality{
+		width: 810px;
+		height: 60px;
+		font-size:16px;
+		padding-left:50px;
+		margin-top: 30px;
+	}
+	.search-quality-txt{
+		width: 150px;
+		height: 25px;
+	}
+	.search-quality-btn{
+		margin-left:20px;
+		width: 70px;
+		height: 30px;
+		font-size:14px;
+		background-color: #4395e6;
+		border: none;
+		color: #ffffff;
+		cursor: pointer;
+	}
+	.form-main{
+		width: 100%;
+		margin-top: 10px;
+	}
+	.form-title{
+		width: 100%;
+		text-align:center;
+		font-size:26px;
+	}
+	.form-main2{
+		width: 100%;
+		margin-top: 20px;
+		font-size: 16px;
+		text-align: right;
+	}
+	.form-main-detail{
+		width: 95%;
+		margin-left: 5%;
+		margin-top:30px;
+
+	}
+	.form-main-detail-title,.form_title_a{
+		width: 100%;
+		height: 45px;
+		line-height: 45px;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.form-main-detail-content_a{
+		width: 50%;
+		float: left;
+	}
+	.form-main-detail-content_b{
+		width: 50%;
+		float: left;
+
+	}
+.form-main2_t{
+	font-weight: 600;
+	margin-left: 25px;
+}
+	.form_content{
+		width: 100%;
+	}
+	.form_cont{
+		font-size: 16px;
+		height: 35px;
+		line-height: 35px;
+		text-align: left;
+	}
+	.form_conte{font-weight: 600;}
+	.form-main-detail_two,.form-main-detail_dd,.form-main-detail_hh{
+		width: 95%;
+		margin-left: 5%;
+		height: 180px;
+		margin-top: 30px;
+	}
+.form-main-detail_aa{
+	width: 95%;
+	margin-left: 5%;
+	margin-top: 30px;
+}
+	.form-main-detail_ee,.form-main-detail_ff,.form-main-detail_gg{
+		width: 95%;
+		margin-left: 5%;
+		height: 330px;
+		margin-top: 30px;
+	}
+.form-main-detail_nn{
+	width: 95%;
+	margin-left: 5%;
+	height: 280px;
+	margin-top: 30px;
+}
+</style>
+<script>
+$(function(){
+	$("#search_sn").attr("autocomplete","off"); //禁用text 自带提示功能；
+	
+	//查询按钮事件-根据sn号查询对应产品检测报告
+	//如果查询不到，提示用户；查询到结果，返回结果至页面中
+	$("#btn_search").click(function(){
+		$("span").html("");
+		var search_sn=$("#search_sn").val();
+		$.ajax({
+   	  		url:"../../../quality/getQualityByBarCode.do",
+   			type:"post",
+   			data:{"barCode":search_sn},
+   			dataType:"json",
+   			success:function(result){
+   				setVal(result);
+   			},
+   			error:function(){
+   				alert("程序出错");
+   			}
+   		});
+		
+		
+	});
+});
+
+function setVal(result){
+	
+	for(var i=0;i<result.length;i++){
+		var data=result[i]["chvtype"];
+		
+		if(data=="check_type_001")
+		{
+			//console.log(result[i]["chvl"]);
+			//1L流量采集
+			$("#tyf_yllval").html(result[i]["chvl"]);
+			$("#tyf_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#tyf_ylljg").html(result[i]["chvres"]);
+			
+			$("#ynd_yllval").html(result[i]["chvl"]);
+			$("#ynd_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#ynd_ylljg").html(result[i]["chvres"]);
+			
+			$("#lhq_yllval").html(result[i]["chvl"]);
+			$("#lhq_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#lhq_ylljg").html(result[i]["chvres"]);
+			
+			$("#lhq_yllval").html(result[i]["chvl"]);
+			$("#lhq_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#lhq_ylljg").html(result[i]["chvres"]);
+			
+			$("#lhh_yllval").html(result[i]["chvl"]);
+			$("#lhh_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#lhh_ylljg").html(result[i]["chvres"]);
+			
+			
+			$("#zj_yllval").html(result[i]["chvl"]);
+			$("#zj_yllzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#zj_ylljg").html(result[i]["chvres"]);
+			
+		}else if(data=="check_type_002")
+		{
+			//调压阀压力采集
+			$("#tyf_ylval").html(result[i]["chvl"]);
+			$("#tyf_ylzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#tyf_yljg").html(result[i]["chvres"]);
+			
+		}else if(data=="check_type_003")
+		{
+			//出氧口温度采集
+			$("#zj_cykwdval").html(result[i]["chvl"]);
+			$("#zj_cykwdzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#zj_cykwdjg").html(result[i]["chvres"]);
+		}else if(data=="check_type_004")
+		{
+			//电压采集
+			$("#dcs_dyval").html(result[i]["chvl"]);
+			$("#dcs_dykzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#dcs_dykjg").html(result[i]["chvres"]);
+			
+			//
+			$("#dy_dyval").html(result[i]["chvl"]);
+			$("#dy_dyzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#dy_dyjg").html(result[i]["chvres"]);
+		}
+		else if(data=="check_type_024")
+		{
+			//低压采集			 
+			$("#dy_dyval").html(result[i]["chvl"]);
+			$("#dy_dyzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#dy_dyjg").html(result[i]["chvres"]);
+		}
+		
+		else if(data=="check_type_008")
+		{
+			//电流采集
+			$("#dcs_dlval").html(result[i]["chvl"]);
+			$("#dcs_dlkzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#dcs_dlkjg").html(result[i]["chvres"]);
+		}else if(data=="check_type_009")
+		{
+			//功率采集
+			$("#dcs_glval").html(result[i]["chvl"]);
+			$("#dcs_glkzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#dcs_glkjg").html(result[i]["chvres"]);
+		}else if(data=="check_type_011")
+		{
+			//氧浓度采集
+			$("#ynd_val").html(result[i]["chvl"]);
+			$("#ynd_zb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#ynd_jg").html(result[i]["chvres"]);
+			
+			$("#lhq_yndval").html(result[i]["chvl"]);
+			$("#lhq_yndzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#lhq_yndjg").html(result[i]["chvres"]);
+			
+			
+			$("#lhh_yndval").html(result[i]["chvl"]);
+			$("#lhh_yndzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#lhh_yndjg").html(result[i]["chvres"]);
+			
+		}else if(data=="check_type_012")
+		{
+			//外壳漏电流
+			$("#nyldl_wkldl").html(result[i]["chvres"]);
+		}else if(data=="check_type_013")
+		{
+			//患者漏电流(直流)
+			$("#nyldl_hzldlzl").html(result[i]["chvres"]);
+		}else if(data=="check_type_014")
+		{
+			//患者漏电流(交流)
+			$("#nyldl_hzldljl").html(result[i]["chvres"]);
+		}else if(data=="check_type_015")
+		{
+			//患者漏电流(应用部分加网电压)
+			$("#nyldl_hzldlwd").html(result[i]["chvres"]);
+		}else if(data=="check_type_016")
+		{
+			//患者辅助漏电流(直流)
+			$("#nyldl_hzfzldlzj").html(result[i]["chvres"]);
+		}else if(data=="check_type_017")
+		{
+			//患者辅助漏电流(交流)
+			$("#nyldl_hzfzldljl").html(result[i]["chvres"]);
+		}else if(data=="check_type_023")
+		{
+			//压缩机流量采集
+			$("#ysj_val").html(result[i]["chvl"]);
+			$("#ysj_zb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#ysj_jg").html(result[i]["chvres"]);
+		}else if(data=="check_type_025")
+		{
+			//吸附塔压力
+			$("#xft_ylval").html(result[i]["chvl"]);
+			$("#xft_ylzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#xft_yljg").html(result[i]["chvres"]);
+		}else if(data=="check_type_026")
+		{
+			//出氧口压力
+			$("#zj_cykval").html(result[i]["chvl"]);
+			$("#zj_cykzb").html(result[i]["chvdvl"]+"~"+result[i]["chvuvl"]);
+			$("#zj_cykjg").html(result[i]["chvres"]);
+		}
+	} 
+}
+
+</script>
+	<body>
+		<div class="search-quality">
+			流程卡号：<input class="search-quality-txt" value="" id="search_sn" type="text"/>
+			<input class="search-quality-btn" id="btn_search" type="button" value="查询"/>
+		</div>
+		<div class="form-main">
+			<div class="form-title">鱼跃产品品质检测数据报告</div>
+			<div class="form-main2">
+				<!-- <span class="form-main2_t">产品名称</span>：&nbsp;<span id="product_name">7F-3</span><span class="form-main2_t">产品生产时间:</span>&nbsp;<span id="product_stime">2017年7月15日11:36:46</span> -->
+			</div>
+			<div class="form-main-detail">
+			 	<div class="form_title_a">一、压缩机检测</div>
+
+				<div class="form_content">
+						<div class="form_cont form_conte">检测内容：压缩机流量（m³/h）</div>
+						<div class="form_cont">检测数值：<span id="ysj_val"></span></div>
+						<div class="form_cont">检测指标：<span id="ysj_zb"></span></div>
+						<div class="form_cont">检测结果：<span id="ysj_jg"></span></div>
+				</div>
+			 </div>
+			 <div class="form-main-detail_two">
+			 	<div class="form-main-detail-title">二、调压阀检测</div>
+					<div class="form-main-detail-content_a">
+						<div class="form_cont form_conte">检测内容：氧流量（L/h）</div>
+						<div class="form_cont">检测数值：<span id="tyf_yllval"></span></div>
+						<div class="form_cont">检测指标：<span id="tyf_yllzb"></span></div>
+						<div class="form_cont">检测结果：<span id="tyf_ylljg"></span></div>
+					</div>
+					<div class="form-main-detail-content_b">
+						<div class="form_cont form_conte">检测内容：压力（MPa）</div>
+						<div class="form_cont">检测数值：<span id="tyf_ylval"></span></div>
+						<div class="form_cont">检测指标：<span id="tyf_ylzb"></span></div>
+						<div class="form_cont">检测结果：<span id="tyf_yljg"></span></div>
+					</div>
+			 </div>
+			<div class="form-main-detail_aa">
+				 <div class="form-main-detail-title">三、吸附塔检测</div>
+					<div>
+						<div class="form_cont form_conte">检测内容：压力（Mpa）</div>
+						<div class="form_cont">检测数值：<span id="xft_ylval"></span></div>
+						<div class="form_cont">检测指标：<span id="xft_ylzb"></span></div>
+						<div class="form_cont">检测结果：<span id="xft_yljg"></span></div>
+					</div>
+			</div>
+			 <div class="form-main-detail_dd">
+			 	<div class="form-main-detail-title">四、氧浓度检测</div>
+			 	<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：氧流量（L/h）</div>
+						<div class="form_cont">检测数值：<span id="ynd_yllval"></span></div>
+						<div class="form_cont">检测指标：<span id="ynd_yllzb"></span></div>
+						<div class="form_cont">检测结果：<span id="ynd_ylljg"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：氧浓度（%）</div>
+					<div class="form_cont">检测数值：<span id="ynd_val"></span></div>
+					<div class="form_cont">检测指标：<span id="ynd_zb"></span></div>
+					<div class="form_cont">检测结果：<span id="ynd_jg"></span></div>
+			 	</div>
+			 </div>
+			 <div class="form-main-detail_ee">
+			 	<div class="form-main-detail-title">五、老化前检测</div>
+			 	<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：氧流量（L/h）</div>
+					<div class="form_cont">检测数值：<span id="lhq_yllval"></span></div>
+					<div class="form_cont">检测指标：<span id="lhq_yllzb"></span></div>
+					<div class="form_cont">检测结果：<span id="lhq_ylljg"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：氧浓度（%）</div>
+					<div class="form_cont">检测数值：<span id="lhq_yndval"></span></div>
+					<div class="form_cont">检测指标：<span id="lhq_yndzb"></span></div>
+					<div class="form_cont">检测结果：<span id="lhq_yndjg"></span></div>
+				</div>
+				<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：温度（℃）</div>
+					<!-- <div class="form_cont">检测数值：<div id="lhq_yndval">123</div></div>
+					<div class="form_cont">检测指标：<div id="lhq_yndzb">sbvjvsvczds</div></div> -->
+					<div class="form_cont">检测结果：<span id="lhq_wd"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：湿度（%）</div>
+					<!-- <div class="form_cont">检测数值：<div id="lhq_yndval">123</div></div>
+					<div class="form_cont">检测指标：<div id="lhq_yndzb">sbvjvsvczds</div></div> -->
+					<div class="form_cont">检测结果：<span id="lhq_sd"></span></div>
+			 	</div>
+			 </div>
+			 <div class="form-main-detail_ff">
+			 	<div class="form-main-detail-title">六、电参数检测</div>
+			 	<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：电压（v）</div>
+					<div class="form_cont">检测数值：<span id="dcs_dyval"></span></div>
+					<div class="form_cont">检测指标：<span id="dcs_dyzb"></span></div>
+					<div class="form_cont">检测结果：<span id="dcs_dyjg"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：电流（A） <br/></div>
+					<div class="form_cont">检测数值：<span id="dcs_dlval"></span></div>
+					<div class="form_cont">检测指标：<span id="dcs_dlzb"></span></div>
+					<div class="form_cont">检测结果：<span id="dcs_dljg"></span></div>
+				</div>
+				<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：功率 </div>
+					<div class="form_cont">检测数值：<span id="dcs_glval"></span></div>
+					<div class="form_cont">检测指标：<span id="dcs_glzb"></span></div>
+					<div class="form_cont">检测结果：<span id="dcs_gljg"></span></div>
+			 	</div>
+			 </div>
+			 <div class="form-main-detail_gg">
+			 	<div class="form-main-detail-title">七、老化后检测</div>
+			 	<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：氧流量（L/h）</div>
+					<div class="form_cont">检测数值：<span id="lhh_yllval"></span></div>
+					<div class="form_cont">检测指标：<span id="lhh_yllzb"></span></div>
+					<div class="form_cont">检测结果：<span id="lhh_ylljg"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：氧浓度（%）<br/></div>
+					<div class="form_cont">检测数值：<span id="lhh_yndval"></span></div>
+					<div class="form_cont">检测指标：<span id="lhh_yndzb"></span></div>
+					<div class="form_cont">检测结果：<span id="lhh_yndjg"></span></div>
+				</div>
+				<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：温度（℃）</div>
+					<!-- <div class="form_cont">检测结果：<span id="ysj_val">123</span></div>
+					<div class="form_cont">检测指标：sbvjvsvczds</div> -->
+					<div class="form_cont">检测结果：<span id="lhh_wd"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：湿度（%）</div>
+					<!-- <div class="form_cont">检测结果：<span id="ysj_val">123</span></div>
+					<div class="form_cont">检测指标：sbvjvsvczds</div> -->
+					<div class="form_cont">检测结果：<span id="lhh_sd"></span></div>
+			 	</div>
+			 </div>
+			 <div class="form-main-detail_hh">
+			 	<div class="form-main-detail-title">八、低压检测</div>
+			 	<div class="form-main-detail-content_r">
+					<div class="form_cont form_conte">检测内容：电压（V）</div>
+					<div class="form_cont">检测数值：<span id="dy_dyval"></span></div>
+					<div class="form_cont">检测指标：<span id="dy_dyzb"></span></div>
+					<div class="form_cont">检测结果：<span id="dy_dyjg"></span></div>
+			 	</div>
+			 </div>
+			<div class="form-main-detail_ff">
+				<div class="form-main-detail-title">九、终检检测</div>
+				<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：出氧口压力(Mpa/h)</div>
+					<div class="form_cont">检测数值：<span id="zj_cykval"></span></div>
+					<div class="form_cont">检测指标：<span id="zj_cykzb"></span></div>
+					<div class="form_cont">检测结果：<span id="zj_cykjg"></span></div>
+				</div>
+				<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：氧流量(L/h) <br/></div>
+					<div class="form_cont">检测数值：<span id="zj_yllval"></span></div>
+					<div class="form_cont">检测指标：<span id="zj_yllzb"></span></div>
+					<div class="form_cont">检测结果：<span id="zj_ylljg"></span></div>
+				</div>
+				<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：出氧口温度采集(℃)</div>
+					<div class="form_cont">检测数值：<span id="zj_cykwdval"></span></div>
+					<div class="form_cont">检测指标：<span id="zj_cykwdzb"></span></div>
+					<div class="form_cont">检测结果：<span id="zj_cykwdjg"></span></div>
+				</div>
+			</div>
+			 <div class="form-main-detail_nn">
+			 	<div class="form-main-detail-title">十、耐压漏电流检测(抽检)</div>
+			 	<div class="form-main-detail-content_a">
+					<div class="form_cont form_conte">检测内容：外壳漏电流</div>
+						<div class="form_cont">检测结果：<span id="nyldl_wkldl"></span></div>
+			 	</div>
+			 	<div class="form-main-detail-content_b">
+					<div class="form_cont form_conte">检测内容：患者漏电流(直流)</div>
+						<div class="form_cont">检测结果：<span id="nyldl_hzldlzl"></span></div>
+				 </div>
+				 <div class="form-main-detail-content_a">
+					 <div class="form_cont form_conte">检测内容：患者漏电流(交流)</div>
+						 <div class="form_cont">检测结果：<span id="nyldl_hzldljl"></span></div>
+				 </div>
+				 <div class="form-main-detail-content_b">
+					 <div class="form_cont form_conte">检测内容：患者漏电流(应用部分加网电压)</div>
+						 <div class="form_cont">检测结果：<span id="nyldl_hzldlwd"></span></div>
+				 </div>
+				 <div class="form-main-detail-content_a">
+					 <div class="form_cont form_conte">检测内容：患者辅助漏电流(直流)</div>
+						 <div class="form_cont">检测结果：<span id="nyldl_hzfzldlzj"></span></div>
+				 </div>
+				 <div class="form-main-detail-content_b">
+					 <div class="form_cont form_conte">检测内容：患者辅助漏电流(交流)</div>
+						 <div class="form_cont">检测结果：<span id="nyldl_hzfzldljl"></span></div>
+				 </div>
+			 </div>
+		</div>	
+		
+	</body> 
+</html> 

@@ -1,0 +1,104 @@
+/*/* {
+    vertical-align: baseline;
+    font-weight: inherit;
+    font-family: inherit;
+    font-style: inherit;
+    outline: 0;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+* {
+    font-size: 12px;
+}
+body,html{
+    width: 100%;
+    height: 100%;
+}
+#container{ 
+    width: 100%;
+    height: 100%;
+    min-width:1921px ;
+}
+
+#title_cont{
+    margin-left: 20%;
+    max-width: 790px;
+}
+#title_text{
+    height: 100px;
+    line-height: 100px;
+    font-size: 3em;
+    margin-left: 100px;
+    float: left;
+}
+鎼存洟鍎寸紙濠氥�缂傛牕褰块弽宄扮础
+#turn_num{
+    float: left;
+}
+#turn_num ul{
+    list-style-type: none;
+}
+.turn_item{
+    float: left;
+    width: 35px;
+    height: 35px;
+    font-size: 2em;
+    background-color: #ffffff;
+    line-height: 35px;
+    text-align: center;
+    border-radius:5px;
+    margin-top: 25px;
+    margin-left: 100px;
+}
+瀹革箒绔熺紙濠氥�
+#left_turn{
+    width:120px;
+    height: 100%;
+    background-color: #ED79A0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0.3;
+    display: none;
+    z-index: 500;
+}
+閸欏疇绔熺紙濠氥�
+#right_turn{
+    width: 120px;
+    height: 100%;
+    background-color: #ED79A0;
+    position: absolute;
+    top: 0px;
+    right: 25%;
+    opacity: 0.3;
+    display: none;
+    z-index: 500;
+}
+/*缂堝銆夐幐澶愭尦閺嶅嘲绱�/
+#turn_left,#turn_right{
+    margin-left:40px;
+    margin-top: 400px;
+}
+/*閸欏疇绔熼柈銊ュ瀻閺嶅嘲绱�/
+#right{
+    width:25%;
+    height: 100%;
+    min-width: 480px;
+    background-color: #00CC66;
+    float:left;
+}
+娑撹缍嬮崶鍓у閻ㄥ嫭鐗卞锟�
+#pic_cont img{
+     max-width: 1425px;
+     max-height:1000px;
+ }
+#pic{
+    display: table-cell;
+    vertical-align: middle;
+}
+#pic_cont{
+    text-align:center;
+
+}

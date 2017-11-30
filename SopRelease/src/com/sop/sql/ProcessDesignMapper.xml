@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.ProcessDesignDao">
+ 
+ 	<select id="findByName" resultType="com.sop.entity.ProcessDesignInfo">
+ 		select * from mes_processDesigninfo where mes_pdg_id = 2
+ 	</select>
+
+	<insert id="save" parameterType="com.sop.entity.ProcessDesignInfo" useGeneratedKeys="false" keyProperty="mes_pdg_id">
+ 		 <selectKey keyProperty="mes_pdg_id" order="BEFORE" resultType="long">
+            select mes_processDesigninfoSeq.nextval as mes_pdg_id from DUAL
+        </selectKey>
+ 		insert into mes_processDesigninfo 
+ 		(mes_pdg_id,mes_pdg_code,mes_pdg_name,mes_pdg_imgname,mes_pdg_sysname,mes_pdg_path) 
+ 		values 
+ 		(#{mes_pdg_id},#{mes_pdg_code},#{mes_pdg_name},#{mes_pdg_imgname},#{mes_pdg_sysname},#{mes_pdg_path})
+ 	</insert>
+
+ 	<insert id="save3" parameterType="com.sop.entity.ProcessDesignInfo">
+ 		insert into mes_processDesigninfo (mes_pdg_id,mes_pdg_code,mes_pdg_name,mes_pdg_imgname,mes_pdg_note) values 
+ 		(#{pdgId},#{pdgCode},#{pdgName},#{pdgImagName},#{pdgNote},#{pdgCode},#{pdgCode})
+ 	</insert>
+ </mapper>

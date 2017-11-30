@@ -1,0 +1,617 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+.container{
+    width: 100%;
+    height: 100%;
+}
+
+/*头部的样式*/
+.header{
+    width: 100%;
+    height: 90px;
+    background: url("../images/header_bg.png");
+}
+.header_content{
+    width: 1024px;
+    height: 90px;
+    margin: auto;
+    font-size: 22px;
+}
+.logo,.vertical,.mes_logo,.header_msg{
+    float: left;
+}
+.logo{
+    margin-top: 30px;
+    margin-right: 20px;
+}
+.mes_logo{
+    margin-left: 20px;
+    margin-top: 30px;
+}
+.header_msg{
+    margin-left: 150px;
+}
+.btn_zx,.btn_exit{
+    width: 70px;
+    height: 25px;
+    margin-top: 18px;
+    background:url("../images/btn_bg.png") ;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+}
+.btn_zx:hover{
+    background:url("../images/btn_bg_f.png") ;
+}
+.btn_exit:hover{
+    background:url("../images/btn_bg_f.png") ;
+}
+.btn_zx{
+    margin-left: 145px;
+}
+.btn_exit{
+    margin-left: 20px;
+}
+.header_user_message{
+    width: 350px;
+    margin-top: 16px;
+    font-size: 12px;
+}
+.user_name,.user_department,.time{
+    color: #333333;
+}
+.user_name_a,.user_department_a{
+    color: #3a8fe4;
+}
+.user_department,.time{
+    margin-left: 8px;
+}
+/*内容部分样式*/
+.content{
+    width: 100%;
+    height: 840px;
+}
+/*内容部分的导航栏的样式*/
+#wrapper {
+    width:100%;
+    height: 80px;
+    background:#f8f8f8;
+}
+.box{
+    width:1024px;
+    margin:auto;
+}
+.tab_menu{
+    list-style:none;
+    width:1024px;
+    overflow:hidden;
+}
+.tab_menu li{
+    padding: 0;
+    margin: 0;
+    width:146px;
+    float:left;
+    height:80px;
+    font-size: 18px;
+    line-height:80px;
+    color:#333333;
+    text-align:center;
+    cursor:pointer;
+}
+.tab_menu li.current{
+    color:#3a8fe4;
+    border-bottom: 3px solid #3a8fe4;
+}
+.tab_box{
+    height:750px;
+}
+.tab_box .hide{display:none;}
+
+/*底部内容样式*/
+.footer{
+    width: 100%;
+    height: 120px;
+    background-color: #313131;
+}
+.footer_cont{
+    width: 1024px;
+    height: 104px;
+    margin: auto;
+}
+.foot_first{
+    width:249px;
+    margin: auto;
+    padding-top: 35px;
+    font-size: 14px;
+}
+.text{
+    color: #ffffff;
+    cursor: pointer;
+}
+.footer_t1{
+    margin-left: 18px;
+    color: #ffffff;
+}
+.footer_t2{
+    margin-left: 18px;
+    color:#ffffff;
+    cursor: pointer;
+}
+.text:hover{
+    text-decoration:underline
+}
+.footer_t2:hover{
+    text-decoration:underline
+}
+.foot_second{
+    width:440px;
+    margin: auto;
+    margin-top: 30px;
+    color: #808080;
+    font-size: 14px;
+}
+.footer_t3{
+    margin-left: 60px;
+}
+
+/*主页内容展示的样式*/
+.tubiao{
+    width:1024px;
+    font-size: 14px;
+    color: #666666;
+    padding-top: 40px;
+}
+.zt_tubiao,.work,.warn,.fault,.noschedul{
+    float: left;
+}
+.work_tb,.warn_tb,.fault_tb,.noschedul_tb{
+    width: 30px;
+    height: 18px;
+    border-radius: 2px;
+    border: none;
+    float: left;
+    margin-left: 35px;
+}
+.work_tb{
+    background-color:#86e886 ;
+}
+.warn_tb{
+    background-color:#f3f26e ;
+}
+.fault_tb{
+    background-color:#ff5560 ;
+}
+.noschedul_tb{
+    background-color:#79d5f5 ;
+}
+.work_text,.warn_text,.fault_text,.noschedul_text{
+    float: left;
+    margin-left: 10px;
+}
+/*1号线的内容样式*/
+.line_first{
+    width: 100%;
+    height: 130px;
+    margin-top: 63px;
+}
+.line_first_title{
+    font-size: 18px;
+    color: #333333;
+}
+.line_first_content{
+    width: 100%;
+    height: 90px;
+    margin-top: 20px;
+}
+.ljzp,.ljcs,.lhqcs,.lhhcs,.zj,.mpfj{
+    width: 150px;
+    height: 90px;
+    float: left;
+    cursor: pointer;
+}
+.line_arrow{
+    float: left;
+    margin-left: 6px;
+    margin-right: 6px;
+    line-height: 90px;
+    text-align: center;
+}
+.ljzp,.ljcs,.lhhcs{
+    background-color:#86e886 ;
+}
+.lhqcs{
+    background-color:#f3f26e ;
+}
+.zj{
+    background-color:#ff5560 ;
+}
+.mpfj{
+    background-color:#79d5f5 ;
+}
+.first_cont_img,.first_cont_te,.first_cont_img2{
+    float: left;
+}
+.first_cont_img{
+    margin-top: 22px;
+    margin-left: 15px;
+}
+.first_cont_img2{
+    margin-top: 32px;
+    margin-left: 15px;
+}
+.first_cont_te{
+    margin-top: 26px;
+    margin-left: 20px;
+}
+.first_cont_te1{
+    font-size: 18px;
+    color: #232245;
+    float: left;
+    margin-top: 36px;
+    margin-left: 20px;
+}
+.first_cont_tex{
+    font-size: 18px;
+    color: #232245;
+}
+/*二号线*/
+.line_second{
+    width: 1024px;
+    height: 130px;
+    margin-top: 80px;
+    position: absolute;
+    top:400px;
+}
+
+/*零号线*/
+.line_third{
+    width: 1024px;
+    height: 130px;
+    margin-top: 80px;
+    position: absolute;
+    top:600px;
+}
+.line_third{
+    margin-bottom: 80px;
+}
+.second_bg{
+    -khtml-opacity:0.5;
+    -moz-opacity:0.5;
+    filter:alpha(opacity=50);
+    filter:"alpha(opacity=50)";
+    opacity:0.5;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50);
+}
+/*鼠标移入样式*/
+#hidden{
+    z-index: 990;
+    width: 367px;
+}
+.fk{
+    z-index: 500;
+    width: 680px;
+}
+
+
+/*裸机装配鼠标移入*/
+#ljzp_conta{
+    display: none;
+}
+.ljzp_hid_cont,.ljcs_hid_cont,.lhqcs_hid_cont,.lhhcs_hid_cont{
+    width: 680px;
+}
+.zj_hid_cont{
+
+}
+.mpfj_hid_cont{
+
+}
+.ljzp_hid_cont,.ljcs_hid_cont,.lhqcs_hid_cont,.lhhcs_hid_cont,.zj_hid_cont,.mpfj_hid_cont{
+
+    height: 40px;
+    position: relative;
+    top:-85px;
+    left: 40px;
+    z-index:500;
+}
+.ljzp_ysb,.ljzp_xft,.ljzp_hxf,.ljzp_dlb,.ljcs_tyfcs,.lhqcs_tyfcs,.lhhcs_tyfcs,.zj_cs,.mpfj_fj,.zj_csa{
+    width: 108px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    border: 1px solid #E0E0E0;
+    background-color: #ebebeb;
+    cursor: pointer;
+    float: left;
+}
+.float_arrow{
+    width: 20px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    float: left;
+}
+/*压缩泵*/
+.ljzp_ysb_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left: 43px;
+    z-index:500;
+}
+.fk2{
+    position: relative;
+    left: 0px;
+}
+.ysb_detail{
+    position: relative;
+    top:-160px;
+    left: 10px;
+}
+.ysb_d1,.ysb_d2{
+    width: 80px;
+    height: 23px;
+    line-height: 23px;
+    text-align: center;
+    border: 1px solid #E0E0E0;
+    background-color: #ebebeb;
+    font-size: 12px;
+}
+.ysb_d1{
+    margin-top: 10px;
+}
+.ysb_d2{
+    margin-top: 6px;
+}
+.ysb_jd{
+    margin-top: 6px;
+    font-size: 12px;
+}
+/*吸附塔*/
+.ljzp_xft_cont{
+    display: none;
+    position: relative;
+    top:-83px;
+    left: 174px;
+    cursor: pointer;
+    z-index:500;
+}
+.ysb_detail2{
+    position: relative;
+    top:-108px;
+    left: 10px;
+}
+/*换向阀*/
+.ljzp_hxf_cont{
+    display: none;
+    position: relative;
+    top:-83px;
+    left: 303px;
+    cursor: pointer;
+    z-index:500;
+}
+/*电路板*/
+.ljzp_dlb_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left: 435px;
+    z-index:500;
+}
+
+
+/*裸机测试鼠标移入*/
+#ljcs_conta{
+    display: none;
+    position: relative;
+    left: 150px;
+}
+.ljcs_tyf_cont{
+    display: none;
+    position: relative;
+    top:-83px;
+    left: 195px;
+    cursor: pointer;
+    z-index:500;
+}
+.tyf_detail{
+    position: relative;
+    top:-160px;
+    left: 10px;
+}
+.ljcs_xft_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left: 323px;
+    cursor: pointer;
+    z-index:500;
+}
+.xft_detail{
+    position: relative;
+    top:-108px;
+    left: 10px;
+}
+.ljcs_ynd_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left: 455px;
+    cursor: pointer;
+    z-index:500;
+}
+.ynd_detail{
+    position: relative;
+    top:-158px;
+    left:10px;
+}
+
+
+
+/*老化前测试鼠标移入*/
+#lhqcs_conta{
+    display: none;
+    position: relative;
+    left: 320px;
+}
+.lhqcs_tyf_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:255px;
+    cursor: pointer;
+    z-index:500;
+}
+.lhq_taf_detail{
+    /*display: none;*/
+    position: relative;
+    top:-158px;
+    left: 120px;
+}
+#lhqcs_tyf_cont1{
+    display: none;
+}
+
+
+
+/*老化后测试鼠标移入*/
+#lhhcs_conta{
+    display: none;
+    position: relative;
+    left: 350px;
+}
+.lhhcs_lhh_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:395px;
+    cursor: pointer;
+    z-index:500;
+}
+.lhh_lhh_detail{
+    position: relative;
+    top:-158px;
+    left: 10px;
+}
+.lhhcs_dy_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:525px;
+    cursor: pointer;
+    z-index:500;
+}
+.lhh_dy_detail{
+    position: relative;
+    top:-108px;
+    left: 10px;
+}
+.lhhcs_nls_cont{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:655px;
+    cursor: pointer;
+    z-index:500;
+}
+.lhh_nls_detail{
+    position: relative;
+    top:-158px;
+    left: 10px;
+}
+
+/*终检鼠标移入*/
+#zj_conta{
+    display: none;
+    position: relative;
+    left: 600px;
+}
+.zj_contz{
+    display: none;
+    position: relative;
+    top:-83px;
+    left:405px;
+    cursor: pointer;
+    z-index:500;
+}
+.zj_detail{
+    position: relative;
+    top:-158px;
+    left: 250px;
+}
+.zj_cont_cs{
+    display: none;
+    position: relative;
+    top:-83px;
+    left:535px;
+    cursor: pointer;
+    z-index:500;
+}
+.zjcs_detail{
+    position: relative;
+    top:-158px;
+    left: 250px;
+}
+
+
+/*铭牌附件鼠标移入*/
+.mpfj_bza{
+    width: 105px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-size: 14px;
+    color: #333333;
+    border: 1px solid #E0E0E0;
+    background-color: #ebebeb;
+    cursor: pointer;
+    float: left;
+}
+#mpfj_conta{
+    display: none;
+    position: relative;
+    left: 550px;
+}
+.mpfj_cont_wk{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:595px;
+    cursor: pointer;
+    z-index:500;
+}
+.mpfj_detail{
+    position: relative;
+    top:-158px;
+    left: 10px;
+}
+.mpfj_cont_fj{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:725px;
+    cursor: pointer;
+    z-index:500;
+}
+.fj_detail{
+    position: relative;
+    top:-108px;
+    left: 10px;
+}
+.mpfj_cont_bz{
+    display: none;
+    position: relative;
+    top:-85px;
+    left:855px;
+    cursor: pointer;
+    z-index:500;
+}
+.bz_detail{
+    position: relative;
+    top:-158px;
+    left: 10px;
+}

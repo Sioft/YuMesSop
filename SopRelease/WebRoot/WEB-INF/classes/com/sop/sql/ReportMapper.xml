@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.ReportDao"> 
+ 	
+ 	<!--  system.DeviceInfo -->
+ 	<select id="findDefectiveProductReport" resultType="map">
+ 		select processnum.pord_id,material.name,checkvalues.chvcid,dictdata.sys_ddt_name,checkvalues.chvuvl,checkvalues.chvdvl,checkvalues.chvl,checkvalues.chvres from
+              (select * from yu_checkvalues) checkvalues
+              left join
+              (select * from sysp_dictdata) dictdata
+              on dictdata.sys_ddt_code =  checkvalues.chvtype
+              left join
+              (select * from yu_processnum) processnum
+              on processnum.pc_barcode = checkvalues.chvcid
+              left join
+              (select * from yu_pord) pord
+              on pord.pord_id = processnum.pord_id
+              left join
+              (select * from yu_materialnum) material
+              on material.productid = pord.productid
+
+              where processnum.pord_id = #{pordId} and checkvalues.chvres ='NG'
+
+ 	</select>
+ 	
+ 	<select id="findAllDefectiveProductReport" resultType="map">
+ 		select processnum.pord_id,material.name,checkvalues.chvcid,dictdata.sys_ddt_name,checkvalues.chvuvl,checkvalues.chvdvl,checkvalues.chvl,checkvalues.chvres from
+              (select * from yu_checkvalues) checkvalues
+              left join
+              (select * from sysp_dictdata) dictdata
+              on dictdata.sys_ddt_code =  checkvalues.chvtype
+              left join
+              (select * from yu_processnum) processnum
+              on processnum.pc_barcode = checkvalues.chvcid
+              left join
+              (select * from yu_pord) pord
+              on pord.pord_id = processnum.pord_id
+              left join
+              (select * from yu_materialnum) material
+              on material.productid = pord.productid
+
+              where checkvalues.chvres ='NG'
+
+ 	</select>
+ 	
+ 	<select id="findAllProductCount" resultType="java.lang.Integer">
+ 		select count(*) from yu_processnum where PASSTIME between #{startTime} and #{endTime}
+
+
+ 	</select>
+ 	<select id="findDefectiveProductAnalysis" resultType="map">
+ 			select distinct checkvalues.chvcid,checkvalues.CHVSID,checkvalues.chvres from
+              (select * from yu_checkvalues) checkvalues
+              left join
+              (select * from yu_processnum) processnum
+              on processnum.pc_barcode = checkvalues.chvcid
+              where checkvalues.chvres ='NG' and checkvalues.pub_crtdate between to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss') and to_date(#{endTime},'yyyy-mm-dd hh24:mi:ss')
+
+
+ 	</select>
+ 	
+ 	<!--  system.DeviceInfo -->
+ 	<select id="findAllDeviceInfo" resultType="map">
+ 		select DVEID DVEID,DVEPJTID DVEPJTID,DVETYPE DVETYPE,DVEDTYPE DVEDTYPE,
+ 		DVEVLE DVEVLE,PUB_CRTDATE createDate 
+ 		from yu_DEVICEINFO where PUB_STATUS is null
+ 	</select>
+ 	<update id="updateDeviceInfo">                                                                                                                                              
+     	update yu_DEVICEINFO 
+     	set DVEPJTID = #{dvepjtid},DVETYPE = #{dvetype},
+     	DVEDTYPE = #{dvedtype},DVEVLE = #{dvevle}
+		where dveid = #{dveid}                                                                                                                                       
+     </update> 
+    <insert id="saveDeviceInfo" useGeneratedKeys="false" keyProperty="dveid">
+ 		<selectKey keyProperty="dveid" order="BEFORE" resultType="java.lang.Integer">
+            select deviceInfoSeq.nextval as dveid from DUAL
+        </selectKey>
+ 		insert into yu_DEVICEINFO 
+ 		(dveid,DVEPJTID,DVETYPE,DVEDTYPE,DVEVLE,pub_crtdate) 
+ 		values 
+ 		(#{dveid},#{dvepjtid},#{dvetype},#{dvedtype},#{dvevle},to_date(#{time},'yyyy-mm-dd hh24:mi:ss'))
+ 	</insert>
+ 	<delete id="deleteDeviceInfo">
+ 		update yu_DEVICEINFO set pub_status='1' where dveid = #{dveid}
+ 	</delete> 
+ 	
+ 	<select id="findProductCount" resultType="java.lang.Integer">
+ 		select count(*) from yu_processnum where passtime>#{startTime}
+ 	</select>
+ 	<select id="findAllPordCount" resultType="java.lang.Integer">
+ 		select sum(num) from yu_pord where pord_id in 
+			(select pord.pord_id from 
+				(select count(*) count,pord_id from yu_Processnum group by pord_id)  process
+				left join
+				(select * from yu_pord) pord 
+				on pord.pord_id = process.pord_id 
+				where process.count &lt; pord.num )
+ 	</select>
+ 	<select id="findOnPordCount" resultType="java.lang.Integer">
+ 		select count(*) from yu_processnum where pord_id in
+ 		(select pord.pord_id from 
+				(select count(*) count,pord_id from yu_Processnum group by pord_id)  process
+				left join
+				(select * from yu_pord) pord 
+				on pord.pord_id = process.pord_id 
+				where process.count &lt; pord.num )
+ 			
+ 	</select>
+ 	<select id="findErrorCount" resultType="java.lang.Integer">
+ 		select COUNT(*) from yu_checkvalues where chvres  = 'NG' and pub_crtdate>to_date(#{startTime},'yyyy-mm-dd hh24:mi:ss')
+ 	</select>
+ 	
+ 	<select id="loadPordCompletRate" resultType="map">
+ 		select pord.pord_id pordId,pord.num num,l.count count from
+	(select * from (select count(*) count,pord_id,passtime from yu_processnum where stock_in = 'yes' group by pord_id,passtime order by passtime desc) where rownum &lt;= 4 ) l
+ 	left join
+     (select pord_id,num from yu_pord ) pord
+     on pord.pord_id = l.pord_id	
+ 	</select>
+ 	
+ 	<select id="loadWeekCompletCount" resultType="java.lang.Integer">
+ 		select count(*) from yu_processnum where stock_in='Y' and to_date(passtime,'yyyy-mm-dd hh24:mi:ss') >= SYSDATE -#{day}
+ 	</select>
+ 	
+ 	
+ 	
+ 	
+ </mapper>

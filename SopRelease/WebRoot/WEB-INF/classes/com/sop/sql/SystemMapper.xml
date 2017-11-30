@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.SystemDao"> 
+ 	<!-- system.sys_dicttype --> 
+ 	<select id="findDictType" resultType="map">
+ 		select sys_dtp_id dtpId,sys_dtp_code dtpCode,sys_dtp_name dtpName from sys_dicttype
+ 	</select>
+ 	<update id="updateDictType" parameterType="java.lang.Integer">                                                                                                                                              
+     	update sys_dicttype set pub_status = '1' where sys_dtp_id = #{dtpId}                                                                                                                                      
+     </update> 
+    <insert id="saveDictType">
+ 		insert into sys_dicttype 
+ 		(sys_dtp_id,sys_dtp_code,sys_dtp_name) 
+ 		values 
+ 		(#{sys_dtp_id},#{sys_dtp_code},#{sys_dtp_name})
+ 	</insert>
+ 	<delete id="deleteDictType">
+ 		
+ 	</delete>
+ 	
+ 	
+ 	<!-- system.sysp_dictdata -->
+ 	<select id="findDictData" resultType="map" parameterType="java.lang.Integer">
+ 		select sys_ddt_id ddtId,sys_ddt_dtpid dtpId,sys_ddt_code ddtCode,sys_ddt_name ddtName
+ 		 from sysp_dictdata where sys_ddt_dtpid = #{dtpId}
+ 	</select>
+ 	<update id="updateDictData" parameterType="java.lang.Integer">                                                                                                                                              
+     		update sysp_dictdata set pub_status='1' where sys_ddt_id = #{dtpId}                                                                                                                                      
+     </update> 
+    <insert id="saveDictData">
+ 		insert into sysp_dictdata 
+ 		(sys_ddt_id,sys_ddt_dtpid,sys_ddt_code,sys_ddt_name) 
+ 		values 
+ 		(#{sys_ddt_id},#{sys_ddt_dtpid},#{sys_ddt_code},#{sys_ddt_name})
+ 	</insert>
+ 	<delete id="deleteDictData">
+ 		
+ 	</delete> 
+ </mapper>

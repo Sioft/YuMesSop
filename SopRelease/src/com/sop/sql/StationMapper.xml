@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.StationDao">
+ 
+ 	<select id="findAll" resultType="com.sop.entity.StationInfo">
+ 		select * from mes_stationinfo
+ 	</select>
+
+	<insert id="save" parameterType="com.sop.entity.ProcessDesignInfo">
+ 		insert into mes_processDesigninfo (mes_pdg_id,mes_pdg_code) values 
+ 		(#{pdgId},#{pdgCode})
+ 	</insert>
+
+ 	<insert id="save3" parameterType="com.sop.entity.ProcessDesignInfo">
+ 		insert into mes_processDesigninfo (mes_pdg_id,mes_pdg_code,mes_pdg_name,mes_pdg_imgname,mes_pdg_note) values 
+ 		(#{pdgId},#{pdgCode},#{pdgName},#{pdgImagName},#{pdgNote})
+ 	</insert>
+ </mapper>

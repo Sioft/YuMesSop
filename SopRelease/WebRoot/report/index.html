@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>鱼跃MES系统</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/product_list.css">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">  
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<!-- jqGrid组件基础样式包-必要 -->
+		<link rel="stylesheet" href="../external/jqgrid/jqgrid/css/ui.jqgrid.css" />
+		<link rel="stylesheet" type="text/css" href="../external/datetimepicker/jquery.datetimepicker.css"/>
+		<!-- jqGrid主题包-非必要 --> 
+		<!-- 在jqgrid/css/css这个目录下还有其他的主题包，可以尝试更换看效果 -->
+		<link rel="stylesheet" href="../external/jqgrid/jqgrid/css/css/redmond/jquery-ui-1.8.16.custom.css" />
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="header_content">
+            <div class="logo"><img src="images/LOGO.png" alt=""></div>
+            <div class="vertical"><img src="images/vertical.png" alt=""></div>
+            <div class="mes_logo"><img src="images/mes_logo.png" alt=""></div>
+            <div class="header_msg">
+                <div class="header_btn">
+                    <input type="button" value="注销" class="btn_zx">
+                    <input type="button" value="退出" class="btn_exit">
+                </div>
+                <div class="header_user_message">
+                    <span class="user_name">用户名：</span>
+                    <span class="user_name_a">张晓华</span>
+                    <span class="user_department">部门：</span>
+                    <span class="user_department_a">精益生产</span>
+                    <span class="time">2017/07/04&nbsp;11:29:20</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div id="wrapper">
+            <div class="box demo2">
+                <ul class="tab_menu">
+                    <li class="current">生产线监控</li>
+                    <li>基础信息</li>
+                    <li>生产任务单</li>
+                    <li>生产工艺信息</li>
+                    <li>品质追溯</li>
+                    <li>维修管理</li>
+                    <li>报表管理</li>
+                </ul>
+                <div class="tab_box">
+                    <div>
+                        <div class="tubiao">
+                            <div class="zt_tubiao">状态:</div>
+                            <div class="work"><div class="work_tb"></div><div class="work_text">工作</div></div>
+                            <div class="warn"><div class="warn_tb"></div><div class="warn_text">报警</div></div>
+                            <div class="fault"><div class="fault_tb"></div><div class="fault_text">故障</div></div>
+                            <div class="noschedul"><div class="noschedul_tb"></div><div class="noschedul_text">无排产</div></div>
+                        </div>
+                        <!--1号线-->
+                        <div class="line_first">
+                            <div class="line_first_title">Line:1#</div>
+                            <div class="line_first_content">
+                                <div class="ljzp" id="ljzp">
+                                    <div class="first_cont_img"><img src="images/line_img_a.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">裸机</div><div class="first_cont_tex">装配</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="ljcs" id="ljcs">
+                                    <div class="first_cont_img"><img src="images/line_img_b.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">裸机</div><div class="first_cont_tex">测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="lhqcs" id="lhqcs">
+                                    <div class="first_cont_img"><img src="images/line_img_c.png" alt="" width="43" height="38"></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">老化前</div><div class="first_cont_tex">&nbsp;&nbsp;测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="lhhcs" id="lhhcs">
+                                    <div class="first_cont_img"><img src="images/line_img_c.png" alt="" width="43" height="38"></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">老化后</div><div class="first_cont_tex">&nbsp;&nbsp;测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="zj" id="zj">
+                                    <div class="first_cont_img"><img src="images/line_img_d.png" alt=""></div>
+                                    <div class="first_cont_te1">终检</div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="mpfj" id="mpfj">
+                                    <div class="first_cont_img2"><img src="images/line_img_e.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">铭牌</div><div class="first_cont_tex">附件</div></div>
+                                </div>
+                            </div>
+                            <!--鼠标移入-->
+                            <div id="hidden">
+                                <!--裸机装配鼠标移入层-->
+                                <div id="ljzp_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a1.png" alt=""></div>
+                                    <div class="ljzp_hid_cont">
+                                        <!--<input type="button" value="压缩泵" class="ljzp_ysb" id="ljzp_ysb">-->
+                                        <div class="ljzp_ysb" id="ljzp_ysb">压缩泵</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="ljzp_xft" id="ljzp_xft">吸附塔</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="ljzp_hxf" id="ljzp_hxf">换向阀</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="ljzp_dlb" id="ljzp_dlb">电路板</div>
+                                    </div>
+                                </div>
+                                <div class="ljzp_ysb_cont" id="ljzp_ysb_cont1">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="ysb_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ljzp_xft_cont" id="ljzp_xft_cont2">
+                                    <div class="fk2"><img src="images/float_img_b2.png" alt=""></div>
+                                    <div class="ysb_detail2">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                    </div>
+                                </div>
+                                <div class="ljzp_hxf_cont" id="ljzp_hxf_cont3">
+                                    <div class="fk2"><img src="images/float_img_b2.png" alt=""></div>
+                                    <div class="ysb_detail2">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                    </div>
+                                </div>
+                                <div class="ljzp_dlb_cont" id="ljzp_dlb_cont4">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="ysb_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--裸机测试鼠标移入-->
+                                <div id="ljcs_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a2.png" alt=""></div>
+                                    <div class="ljcs_hid_cont">
+                                        <div class="ljcs_tyfcs" id="ljcs_tyfcs">调压阀测试</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="ljcs_tyfcs" id="ljcs_xftcs">吸附塔测试</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="ljcs_tyfcs" id="ljcs_yndcs">氧浓度测试</div>
+                                    </div>
+                                </div>
+                                <div class="ljcs_tyf_cont" id="ljcs_tyf_cont1">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="tyf_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ljcs_xft_cont" id="ljcs_xft_cont2">
+                                    <div class="fk2"><img src="images/float_img_b2.png" alt=""></div>
+                                    <div class="xft_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                    </div>
+                                </div>
+                                <div class="ljcs_ynd_cont" id="ljcs_ynd_cont3">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="ynd_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--老化前测试鼠标移入-->
+                                <div id="lhqcs_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a5.png" alt=""></div>
+                                    <div class="lhqcs_hid_cont">
+                                        <div class="lhqcs_tyfcs" id="lhqcs_tyfcs">老化测试</div>
+                                    </div>
+                                </div>
+                                <div class="lhqcs_tyf_cont" id="lhqcs_tyf_cont1">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="lhq_taf_detail">
+                                        <div class="ysb_d1">操作人员111</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--老化后测试鼠标移入-->
+                                <div id="lhhcs_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a4.png" alt=""></div>
+                                    <div class="lhhcs_hid_cont">
+                                        <div class="lhhcs_tyfcs" id="lhhcs_cs">老化后测试</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="lhhcs_tyfcs" id="lhhcs_dycs">低压启动测试</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="lhhcs_tyfcs" id="lhhcs_nls">拧螺丝装配</div>
+                                    </div>
+                                </div>
+                                <div class="lhhcs_lhh_cont" id="lhhcs_lhh_cont1">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="lhh_lhh_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="lhhcs_dy_cont" id="lhhcs_dy_cont2">
+                                    <div class="fk2"><img src="images/float_img_b2.png" alt=""></div>
+                                    <div class="lhh_dy_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                    </div>
+                                </div>
+                                <div class="lhhcs_nls_cont" id="lhhcs_nls_cont3">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="lhh_nls_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!--终检鼠标移入-->
+                                <div id="zj_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a3.png" alt=""></div>
+                                    <div class="zj_hid_cont">
+                                        <div class="zj_cs" id="zj_zp">拧螺丝装配</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="zj_csa" id="zj_csa">终检测试</div>
+                                    </div>
+                                </div>
+                                <div class="zj_contz" id="zj_contz">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="zj_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="zj_cont_cs" id="zj_cont_cs">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="zjcs_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <!--铭牌附件鼠标移入-->
+                                <div id="mpfj_conta" class="hid_div">
+                                    <div class="fk"><img src="images/float_img_a6.png" alt=""></div>
+                                    <div class="mpfj_hid_cont">
+                                        <div class="mpfj_fj" id="mpfj_wkbq">外壳标签</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="mpfj_fj" id="mpfj_fj">附件</div>
+                                        <div class="float_arrow"><img src="images/float_arrow.png" ></div>
+                                        <div class="mpfj_bza" id="mpfj_bz">包装</div>
+                                    </div>
+                                </div>
+                                <div class="mpfj_cont_wk" id="mpfj_cont_wk1">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="mpfj_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mpfj_cont_fj" id="mpfj_cont_fj2">
+                                    <div class="fk2"><img src="images/float_img_b2.png" alt=""></div>
+                                    <div class="fj_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+
+                                    </div>
+                                </div>
+                                <div class="mpfj_cont_bz" id="mpfj_cont_bz3">
+                                    <div class="fk2"><img src="images/float_img_b1.png" alt=""></div>
+                                    <div class="bz_detail">
+                                        <div class="ysb_d1">操作人员</div>
+                                        <div class="ysb_d2">效率</div>
+                                        <div class="ysb_d2">不良率</div>
+                                        <div class="ysb_jd">
+                                            <div class="ysb_jd_t">任务单进度：</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!--2号线-->
+                        <div class="line_second">
+                            <div class="line_first_title">Line:2#</div>
+                            <div class="line_first_content">
+                                <div class="ljzp second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_a.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">裸机</div><div class="first_cont_tex">装配</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="ljcs second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_b.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">裸机</div><div class="first_cont_tex">测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="lhqcs second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_c.png" alt="" width="43" height="38"></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">老化前</div><div class="first_cont_tex">&nbsp;&nbsp;测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="lhhcs second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_c.png" alt="" width="43" height="38"></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">老化后</div><div class="first_cont_tex">&nbsp;&nbsp;测试</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="zj second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_d.png" alt=""></div>
+                                    <div class="first_cont_te1">终检</div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="mpfj second_bg">
+                                    <div class="first_cont_img2"><img src="images/line_img_e.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">铭牌</div><div class="first_cont_tex">附件</div></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--0号线-->
+                        <div class="line_third">
+                            <div class="line_first_title">Line:0#</div>
+                            <div class="line_first_content">
+                                <div class="ljzp second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_f.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">维修一</div><div class="first_cont_tex">工位</div></div>
+                                </div>
+                                <div class="line_arrow"><img src="images/line_arrow.png" alt="箭头"></div>
+                                <div class="ljcs second_bg">
+                                    <div class="first_cont_img"><img src="images/line_img_f.png" alt=""></div>
+                                    <div class="first_cont_te"><div class="first_cont_tex">维修二</div><div class="first_cont_tex">工位</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--基础信息-->
+                    <div class="hide">
+                        <div class="dg">
+                            <div class="content_product">
+                                <div class="product_left">
+                                    <ul class="nav navbar-nav" id="indexMenu_basic_msg">
+                                        <li class="navbar-nav_first nav_first_li"><a target="html_page/basic_msg/msg1.html">基础信息1</a></li>
+                                        <li><a target="html_page/basic_msg/msg2.html">基础信息2</a></li>
+                                        <li><a target="html_page/basic_msg/msg3.html">基础信息3</a></li>
+                                        <li><a target="html_page/basic_msg/msg4.html">基础信息4</a></li>
+                                        <li><a target="html_page/basic_msg/msg5.html">基础信息5</a></li>
+                                    </ul>
+                                </div>
+                                <div id="product_basic_msg"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--生产任务单-->
+                    <div class="hide">
+                        <div class="content_product">
+                            <div class="product_left">
+                                <ul class="nav navbar-nav" id="indexMenu">
+                                    <li class="navbar-nav_first nav_first_li"><a target="html_page/production_scrwd/task_list_entry.html">生产任务单录入</a></li>
+                                    <li><a target="html_page/production_scrwd/search_task.html">查询任务单信息</a></li>
+                                    <li><a target="html_page/production_scrwd/incomplete_production.html">未完成生产任务单</a></li>
+                                    <li><a target="html_page/production_scrwd/finish_production.html">完成生产任务单</a></li>
+                                    <li><a target="html_page/production_scrwd/production_finish_rate.html">生产任务单完成率</a></li>
+                                    <li><a target="html_page/production_scrwd/card_print.html">补打流程卡</a></li>
+                                </ul>
+                            </div>
+                            <div id="product_right"></div>
+                        </div>
+                    </div>
+                    <!--生产工艺信息-->
+                    <div class="hide">
+                        <div class="content_product">
+                            <div class="product_left">
+                                <ul class="nav navbar-nav" id="indexMenu_technology">
+                                    <li class="navbar-nav_first nav_first_li"><a target="html_page/production_technology/SOP_upload.html">SOP上传</a></li>
+                                    <li><a target="html_page/production_technology/process_msg_maintenance.html">工序信息维护</a></li>
+                                    <li><a target="html_page/production_technology/process_line_maintenance.html">工艺路线维护</a></li>
+                                    <li><a target="html_page/production_technology/inspection_parameter_maintenance.html">检测参数维护</a></li>
+                                </ul>
+                            </div>
+                            <div id="product_right_technology"></div>
+                        </div>
+                    </div>
+                    <!--品质追溯-->
+                    <div class="hide">
+                        <div class="content_product">
+                            <div class="product_left">
+                                <ul class="nav navbar-nav" id="indexMenu_quality">
+                                    <li class="navbar-nav_first nav_first_li"><a target="html_page/quality_traceability/search_quality.html">品质查询</a></li>
+                                    <li><a target="html_page/quality_traceability/defective_product.html">不良品追溯</a></li>
+                                    <li><a target="html_page/quality_traceability/quality_inspection.html">品质检测数据报告</a></li>
+                                    <li><a target="html_page/quality_traceability/no_data_analysis.html">不良数据分析</a></li>
+                                </ul>
+                            </div>
+                            <div id="product_right_quality"></div>
+                        </div>
+                    </div>
+                    <!--维修管理-->
+                    <div class="hide">
+                        <div class="content_product">
+                            <div class="product_left">
+                                <ul class="nav navbar-nav" id="indexMenu_requir">
+                                    <li class="navbar-nav_first nav_first_li"><a target="html_page/requir/requir_msg_input.html">维修信息录入</a></li>
+                                    <li><a target="html_page/requir/requir_report.html">维修报表</a></li>
+                                </ul>
+                            </div>
+                            <div id="product_right_requir"></div>
+                        </div>
+                    </div>
+                    <!--报表管理-->
+                    <div class="hide">
+                        <div class="content_product">
+                            <div class="product_left">
+                                <ul class="nav navbar-nav" id="indexMenu_report">
+                                    <li class="navbar-nav_first nav_first_li"><a target="html_page/report_form/form1.html">报表11</a></li>
+                                    <li><a target="html_page/report_form/form2.html">报表22</a></li>
+                                    <li><a target="html_page/report_form/form3.html">报表33</a></li>
+                                    <li><a target="html_page/report_form/form4.html">报表44</a></li>
+                                    <li><a target="html_page/report_form/form5.html">报表55</a></li>
+                                </ul>
+                            </div>
+                            <div id="product_right_report"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer_cont">
+            <div class="foot_first"><span class="text">关于</span><span class="footer_t1">|</span><span class="footer_t2">版本</span><span class="footer_t1">|</span><span class="footer_t2">说明</span><span class="footer_t1">|</span><span class="footer_t2">帮助</span></div>
+            <div class="foot_second"><span>苏州哈工英飒智能技术有限公司</span><span class="footer_t3">服务电话： 0512-62576950</span></div>
+        </div>
+    </div>
+</div>
+</body>
+<!-- <script type="text/javascript" src="../scripts/jquery-2.1.1.min.js"></script> -->
+	<script type="text/javascript" src="javascript/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="javascript/left_menu.js"></script>
+    <script type="text/javascript" src="javascript/jquery.tabs.js"></script>
+    <script type="text/javascript" src="javascript/main_hidden.js"></script>
+    	<script type="text/javascript" src="javascript/echarts.common.min.js"></script>
+    	<script src="../external/datetimepicker/build/jquery.datetimepicker.full.js"></script>
+    	<!-- jqGrid插件包-必要 -->
+		<script type="text/javascript" src="../external/jqgrid/jqgrid/js/jquery.jqGrid.src.js"></script>
+		<!-- jqGrid插件的多语言包-非必要 -->
+		<!-- 在jqgrid/js/i18n下还有其他的多语言包，可以尝试更换看效果 -->
+		<script type="text/javascript" src="../external/jqgrid/jqgrid/js/i18n/grid.locale-cn.js"></script>
+
+<script>
+    $(function(){
+        $('.demo2').Tabs({
+            event:'click',
+            switchBtn : true
+        });
+    });
+</script>
+</html>

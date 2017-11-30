@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+ <mapper namespace="com.sop.dao.SopDao">
+ 	<!--  -->
+ 	<select id="findAllSop" parameterType="map"
+ 	resultType="com.sop.entity.SopInfo">
+ 		select * from
+			(select * from mes_sopInfo) sop
+ 			left join
+ 			(select * from yu_procedureInfo where pub_status = 'Y') proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode} and procedure_no = #{procedureNo}
+ 			<!-- group by mes_sop_version -->
+ 	</select>
+ 	
+ 	<select id="findSop" parameterType="map"
+ 	resultType="com.sop.entity.ProcessDesignInfo">
+ 		select * from mes_processDesigninfo where mes_pdg_id exists
+ 		(select mes_pdg_id from 
+ 			(select * from mes_stationinfo where station_id = '${0}') station
+ 			left join 
+ 			(select * from mes_sopInfo where product_type = '${1}') soplist
+ 			on soplist.soplist = station.soplist
+ 			left join 
+ 			mes_sopinfo sop on sop.product_type = soplist.product_type
+ 		)
+ 		<!-- mes_sopinfo       		工艺投放表
+ 			mes_stationinfo	      	工位信息
+ 			mes_soplistInfo			工序表
+ 			mes_processDesigninfo 	工艺信息 -->
+ 	</select>
+ 	<select id="findProductCode" 
+ 	resultType="string">
+ 		<!-- select productid from
+		(select * from yu_pord) pord
+		left join
+		(select * from yu_processnum ) proce
+		on proce.pord_id = pord.pord_id
+	    where pc_barcode=#{barCode} and rownum=1 -->
+	    <!-- 根据条码打印表查询出产品大类 -->
+	    
+	    select PRODUCTID from yu_pord where pord_id =
+	    (select pord_id from yu_printmark 
+	    where startpcid &lt;= #{barCode} and endpcid >= #{barCode} and rownum =1)
+ 	</select>
+ 	
+ 	<select id="findProductCodeAndName" 
+ 	resultType="map">
+ 		<!-- select productid from
+		(select * from yu_pord) pord
+		left join
+		(select * from yu_processnum ) proce
+		on proce.pord_id = pord.pord_id
+	    where pc_barcode=#{barCode} and rownum=1 -->
+	    <!-- 根据条码打印表查询出产品大类 -->
+	    select pord.pord_id pordid,material.PRODUCTID,material.NAME productname from
+	    (select * from yu_pord where pord_id =
+	    (select pord_id from yu_printmark 
+	    where startpcid &lt;= #{barCode} and endpcid >= #{barCode} and rownum =1)) pord
+	    left join
+	    (select PRODUCTID,NAME from YU_MATERIALNUM) material
+	    on material.PRODUCTID = pord.PRODUCTID
+ 	</select>
+ 	<select id="findMessage"
+ 	resultType="map">
+ 		 <!-- select pord.pord_id pordId,materialnum.name productCode,procedure.procedure_no procedureNo,procedure.procedure_name procedureName from
+		(select pord_id from yu_printmark
+	    where startpcid &lt;=#{barCode} and endpcid >= #{barCode}) printmark
+ 		left join
+ 		(select * from yu_pord) pord
+ 		on pord.pord_id = printmark.pord_id
+ 		left join
+ 		(select * from yu_procedureInfo where procedure_no = #{procedureNo}) procedure
+         on procedure.product_code = pord.productid
+         left join
+         (select * from YU_MATERIALNUM) materialnum
+         on materialnum.productid = pord.productid  -->
+       select pord.pord_id pordId,materialnum.name productCode,procedure.procedure_no procedureNo,procedure.procedure_name procedureName from
+		(select pord_id from yu_printmark
+	    where startpcid &lt;=#{barCode} and endpcid >= #{barCode}) printmark
+ 		left join
+ 		(select * from yu_pord) pord
+ 		on pord.pord_id = printmark.pord_id
+ 		left join
+ 		(select * from yu_procedureInfo where pub_status = 'Y' and procedure_no = #{procedureNo}) procedure
+         on procedure.product_code = pord.productid
+         left join
+         (select * from YU_MATERIALNUM) materialnum
+         on materialnum.productid = pord.productid 
+ 		<!-- mes_sopinfo       		工艺投放表
+ 			mes_stationinfo	      	工位信息
+ 			mes_soplistInfo			工序表
+ 			mes_processDesigninfo 	工艺信息 -->
+ 	</select>
+ 	<select id="findExsitSop"
+ 	resultType="map">
+ 	<!--    pdgpath       		路径
+ 			sysname	      	系统文件名
+ 			versionno		版本号
+ 			validtime 	生效时间 -->
+ 	 select mes_pdg_sysname sysname,mes_pdg_path pdgpath,mes_sop_validtime validTime from
+			(select * from mes_sopInfo) sop
+ 			left join
+ 			(select * from yu_procedureInfo where pub_status = 'Y') proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode} and procedure_no in 
+ 			<foreach collection="procedureGroup" item="item" index="index" 
+				open="(" separator="," close=")">#{item}</foreach>
+ 			and mes_sop_version = #{versionNo}
+ 			and sop.pub_status is null
+ 	</select>
+ 	
+ 	<!-- 找到已生效的最大版本号 -->
+ 	<select id="findMaxVersion"
+ 	resultType="Integer">
+ 	<!--    pdgpath       		路径
+ 			sysname	      	系统文件名
+ 			versionno		版本号
+ 			validtime 	生效时间 -->
+ 	select MAX(mes_sop_version) versionno from
+			(select * from mes_sopInfo) sop
+ 			left join
+ 			(select * from yu_procedureInfo where pub_status = 'Y') proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode}  and procedure_no = #{procedureNo} 
+ 			and sop.pub_status is null
+ 			group by sop.procedure_id
+ 	 <!-- select Max(mes_sop_version) from
+			(select mes_pdg_id,procedure_id from mes_sopInfo) sop
+ 			left join
+ 			(select procedure_id from sop_procedure) proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode} and procedure_no = #{procedureNo} 
+ 			and mes_sop_validtime   &lt;=  to_date(sysdata,'yyyy-mm-dd hh:mi:ss') -->
+ 	</select>
+ 	
+ 	<!-- 找到还未生效的版本号 -->
+ 	<!-- 生效时间大于当前时间 -->
+ 	<!-- 假设有好几个版本 -->
+ 	<select id="findNextVersion"
+ 	resultType="java.lang.Integer">
+ 	<!--    pdgpath       		路径
+ 			sysname	      	系统文件名
+ 			versionno		版本号
+ 			validtime 	生效时间 -->
+ 	select mes_sop_version from
+			(select * from mes_sopInfo) sop
+ 			left join
+ 			(select * from yu_procedureInfo where pub_status = 'Y') proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode} and procedure_no = #{procedureNo}
+ 			and mes_sop_validtime >= (Select sysdate from dual)
+ 			and sop.pub_status is null
+ 			group by mes_sop_version
+ 	</select>
+ 	
+ 	<!-- 找到还未生效的版本号 -->
+ 	<!-- 生效时间大于当前时间 -->
+ 	<!-- 假设有好几个版本 -->
+ 	<select id="findAllVersion"
+ 	resultType="java.lang.Integer">
+ 	<!--    pdgpath       		路径
+ 			sysname	      	系统文件名
+ 			versionno		版本号
+ 			validtime 	生效时间 -->
+ 	select mes_sop_version from
+			(select * from mes_sopInfo) sop
+ 			left join
+ 			(select * from yu_procedureInfo where pub_status = 'Y') proce
+ 			on proce.procedure_id = sop.procedure_id
+ 			left join
+ 			(select mes_pdg_id,mes_pdg_sysname,mes_pdg_path from mes_processDesignInfo) pdg
+ 			on pdg.mes_pdg_id = sop.mes_pdg_id
+ 			where product_code = #{productCode} and procedure_no = #{procedureNo}
+ 			and sop.pub_status is null
+ 			group by mes_sop_version 
+ 			order by mes_sop_version desc
+ 	</select>
+ 	
+ 	<select id="findChild" resultType="com.sop.entity.ProductTree">
+ 		select * from yu_productTree where pub_status is null order by menu_level,node_id desc
+ 	</select>
+ 	
+ 	<select id="findProcedureId" resultType="long">
+ 	<!-- parameterType="Map"> -->
+ 		select procedure_id from yu_procedureInfo where pub_status = 'Y' and product_code=#{productCode} and procedure_no=#{procedureNo} and rownum=1
+ 	</select>
+ 	
+ 	<select id="findProcedureNo" resultType="java.lang.Integer" parameterType="String">
+ 	<!-- parameterType="Map"> -->
+ 		select procedure_no from mes_stationinfo where mes_stn_code=#{productCode} and rownum=1
+ 	</select>
+ 	<!-- 根据IP -->
+ 	<select id="findprocedureNoUser" resultType="map"> 
+ 		<!-- 表结构改变，一个工位对应多个工序 -->
+ 		<!-- select procedure_no procedureno,user_id userid from mes_stationConfig where ip_address=#{ipAddress} and product_id = #{productCode} and rownum=1 -->
+ 		<!-- select procedure.procedure_no procedureno,employee.empname userid,procedure.procedure_name procedurename from
+ 		(select * from mes_stationConfig) station
+ 		left join 
+ 		(select * from yu_procedureInfo) procedure
+ 		on procedure.procedure_no = station.procedure_no
+ 		left join
+ 		(select * from yu_procedureInfo) procedure2
+ 		on procedure.product_code = station.product_id
+ 		left join
+ 		(select * from yu_employeeor) employee
+ 		on employee.empnumber = station.user_id
+ 		 where ip_address=#{ipAddress} and product_id = #{productCode} and rownum=1 -->
+	 	 select procedure.procedure_no procedureno,employee.empname userid,procedure.procedure_name procedurename from
+	        (select * from mes_stationconfig) station
+	        left join
+	        (select * from yu_proceduregroup where pub_status is null) proceduregroup
+	        on proceduregroup.procedure_group = station.procedure_group
+	        left join
+	        (select * from yu_procedureInfo where pub_status = 'Y') procedure
+	        on  procedure.procedure_no = proceduregroup.procedure_no and procedure.product_code = station.product_id
+	        left join
+	        (select * from yu_employeeor) employee
+	        on employee.empnumber = station.user_id
+ 		 where ip_address=#{ipAddress} and product_id = #{productCode} 
+ 	</select>
+ 	<select id="findprocedureNoIp" resultType="java.lang.Integer">
+ 	<!-- parameterType="Map"> -->
+ 		select procedure_group from mes_stationConfig where ip_address=#{ipAddress} and product_id = #{productCode} and rownum=1
+ 	</select>
+ 	<insert id="saveSop" parameterType="com.sop.entity.SopInfo" useGeneratedKeys="false" keyProperty="mes_sop_id">
+ 		 <selectKey keyProperty="mes_sop_id" order="BEFORE" resultType="long">
+            select mes_sopinfo_seq.nextval as mes_sop_id from DUAL
+        </selectKey>
+ 		insert into mes_sopinfo 
+ 		(mes_sop_id,mes_pdg_id,procedure_id,mes_sop_version,mes_sop_validtime) 
+ 		values 
+ 		(#{mes_sop_id},#{mes_pdg_id},#{procedure_id},#{mes_sop_version},to_date(#{mes_sop_validtime},'yyyy-mm-dd hh24:mi:ss'))
+ 	</insert>
+
+ 	<update id="deleteVersionSop" >                                                                                                                                              
+     		update mes_sopInfo set pub_status='1' where procedure_id=#{procedureId} and mes_sop_version = #{versionNo}                                                                                                                                       
+     </update> 
+     <select id="findSopAllProce" parameterType="com.sop.entity.SopInfo" resultType="map">
+     	select product_code productCode,procedure_no procedureNo,mes_sop_version versionNo,
+     	to_char(mes_sop_validtime,'yyyy-mm-dd hh24:mi:ss') validtime,
+     	mes_pdg_path nodepath,mes_pdg_sysname sysname from
+		(select * from yu_procedureInfo where pub_status = 'Y' and product_code = #{productCode} ) proce
+		left join
+		(select * from mes_sopInfo where pub_status is null) sop
+		on sop.procedure_id = proce.procedure_id
+		left join
+		(select * from mes_processDesignInfo) pdf
+		on pdf.mes_pdg_id = sop.mes_pdg_id
+		order by procedure_no,mes_sop_version desc
+     </select>
+ </mapper>
